@@ -10,3 +10,5 @@ The name of the library reflects the fact that the semiring of dynamical systems
 These two cities belong to region where the game of [pétanque](https://en.wikipedia.org/wiki/Pétanque) was developed and [lenga d’òc](https://en.wikipedia.org/wiki/Occitan_language) (specifically the Provençal dialect) is traditionally spoken.
 “Petanca” is, of course, “pétanque” in lenga d’òc.
 Furthermore, bijective dynamical systems, when they are depicted as graphs (i.e., as disjoint unions of cycles), remind one of the developers of this library of pétanque boules.
+
+This software was written by human beings without any generative AI tools.
