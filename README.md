@@ -87,7 +87,7 @@ sage: sqrt((C[3] + 2*C[7])^3, 3)
 C[3] + 2*C[7]
 ```
 
-The `factor` function computes one (among the many possible) factorisations of a permutation:
+The `factor` function computes one (among the many possible) factorisations into irreducibles of a permutation:
 
 ```sage
 sage: factor(C[2]^2 * C[3] * (C[4] + 1))
