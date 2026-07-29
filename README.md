@@ -80,17 +80,21 @@ False
 sage: (C[2] + C[3]).is_prime()
 False
 
-sage: factor(C[2]^2 * C[3] * (C[4] + 1))
-(C[1] + C[4]) * C[2]^2 * C[3]
-
-sage: list(factor(C[2]^2 * C[3] * (C[4] + 1)))
-[(C[1] + C[4], 1), (C[2], 2), (C[3], 1)]
-
 sage: sqrt((C[2] + C[3])^2)
 C[2] + C[3]
 
 sage: sqrt((C[3] + 2*C[7])^3, 3)
 C[3] + 2*C[7]
+```
+
+The `factor` function computes one (among the many possible) factorisations of a permutation:
+
+```sage
+sage: factor(C[2]^2 * C[3] * (C[4] + 1))
+(C[1] + C[4]) * C[2]^2 * C[3]
+
+sage: list(factor(C[2]^2 * C[3] * (C[4] + 1)))
+[(C[1] + C[4], 1), (C[2], 2), (C[3], 1)]
 ```
 
 Furthermore, the elements of `PP` can be enumerated in several ways:
@@ -147,7 +151,7 @@ sage: minimal_polynomial(C[2] + C[3]).roots(ring=PP)
 ```
 
 
-## Coming features
+## Coming soon 🚧
 
 - Solving multivariate linear equations
 
