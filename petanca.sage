@@ -57,7 +57,7 @@ class Permutation(CombinatorialFreeModule.Element):
     def _has_negative_terms(self):
         return any(coeff < 0 for coeff in self.coefficients())
 
-    def minimal_polynomial(self):
+    def minimal_polynomial(self, var='X'):
         for deg in PositiveIntegers():
             basis = PP.up_closure(self.cycles())
             dim = len(basis)
@@ -70,7 +70,7 @@ class Permutation(CombinatorialFreeModule.Element):
             kernel = A.right_kernel()
             if not kernel:
                 continue
-            R.<X> = PP[]
+            R.<X> = PP[var]
             coeffs = kernel.basis()[0]
             return R.sum(-coeffs[i] * X^i
                          for i in range(nvars))
@@ -252,6 +252,6 @@ _R.<X> = PP[]
 
 P = C[2]*X^2 + (C[4] + C[6])*X - 16*C[2] - 4*C[4] - 18*C[6] - C[12]
 
-_R.<X, Y> = PP[]
-P = C[2]*X + C[6] + Y
-A = C[2] + 2*C[3] + C[5]
+# _R.<X, Y> = PP[]
+# P = C[2]*X + C[6] + Y
+# A = C[2] + 2*C[3] + C[5]
