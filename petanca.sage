@@ -60,7 +60,7 @@ class Permutation(CombinatorialFreeModule.Element):
         return any(coeff < 0 for coeff in self.coefficients())
 
     def minimal_polynomial(self, var='X'):
-        for deg in PositiveIntegers():
+        for deg in NN:
             basis = PP.up_closure(self.cycles())
             dim = len(basis)
             nvars = deg + 1
