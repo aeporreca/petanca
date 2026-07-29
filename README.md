@@ -22,10 +22,12 @@ You can use `from petanca import *` in SageMath (or Python) from the same direct
 A permutation is represented as a sum of cycles with their multiplicity.
 A cycle of length $n$ is represented as `C[n]`.
 
-```sage
+```python
 sage: C[3] + 2*C[5] + C[7] + 1
-C[1] + C[3] + 2*C[5] + C[7]```
+C[1] + C[3] + 2*C[5] + C[7]
+```
 
+As you can see, `1` is currently displayed as `C[1]`, but both notations can be used in input.
 
 
 ## The name
