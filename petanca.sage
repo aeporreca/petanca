@@ -37,11 +37,8 @@ class Permutation(CombinatorialFreeModule.Element):
             root += min((self - power).cycles())
             power = root^k
         if power != self:
-            return None
-        if all:
-            return [root]
-        else:
-            return root
+            return [] if all else None
+        return [root] if all else root
 
     def factor(self):
         if self == 0:
@@ -69,13 +66,13 @@ class Permutation(CombinatorialFreeModule.Element):
             nvars = deg + 1
             A = matrix(ZZ, dim, nvars)
             for j in range(nvars):
-                B = self^j
+                power = self^j
                 for i in range(dim):
-                    A[i, j] = B.coefficient(basis[i].size())
+                    A[i, j] = power.coefficient(basis[i].size())
             kernel = A.right_kernel()
-            coeffs = kernel.basis()[0]
             if not kernel:
                 continue
+            coeffs = kernel.basis()[0]
             R.<X> = PP[var]
             return R.sum(-coeffs[i] * X^i
                          for i in range(nvars))
