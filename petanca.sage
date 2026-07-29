@@ -65,10 +65,11 @@ class Permutation(CombinatorialFreeModule.Element):
             dim = len(basis)
             nvars = deg + 1
             A = matrix(ZZ, dim, nvars)
+            power = PP(1)
             for j in range(nvars):
-                power = self^j
                 for i in range(dim):
                     A[i, j] = power.coefficient(basis[i].size())
+                power *= self
             kernel = A.right_kernel()
             if not kernel:
                 continue
