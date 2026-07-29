@@ -172,6 +172,6 @@ In order to promote open research, Petanca is distributed under the [GNU AGPL](h
 
 ## Credits
 
-The Petanca software is copyright © 2024 by [Antonio E. Porreca](https://aeporreca.org) and [Rocco Ascone](https://roccoasc1.github.io).
+The Petanca software is copyright © 2026 by [Antonio E. Porreca](https://aeporreca.org) and [Rocco Ascone](https://roccoasc1.github.io).
 The development has been partly supported by the French ANR project ANR-24-CE48-7504 [ALARICE](https://alarice.lis-lab.fr) and the EU HORIZON-MSCA-2022-SE-01
 project 101131549 [ACANCOS](https://acancos.units.it).
