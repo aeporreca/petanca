@@ -1,4 +1,6 @@
-# nondeterminism - A Python library for nondeterministic algorithms
+# Petanca: Una bibliotèca SageMath per far de calculs dins lo semianèl
+# dels sistèmas dinamics or, in English, a SageMath library for
+# computing in the semiring of dynamical systems
 # Copyright (C) 2026 Antonio E. Porreca, Rocco Ascone
 
 # This program is free software: you can redistribute it and/or modify
