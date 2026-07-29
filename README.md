@@ -14,7 +14,7 @@ In order to promote open research and teaching, Petanca is distributed under the
 
 ## Installation
 
-You can use `from petanca import *` in SageMath (or Python) from the same directory where the file `petanca.py` is located. (In case you need to know, this file is obtained with `sage --preparse petanca.sage; mv petanca.sage.py petanca.py`.)
+You can use `from petanca import *` in SageMath from the same directory where the file `petanca.py` is located. (In case you need to know, this file is obtained with `sage --preparse petanca.sage; mv petanca.sage.py petanca.py`.)
 
 
 ## Basic usage
