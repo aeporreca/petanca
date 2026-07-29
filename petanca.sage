@@ -1,6 +1,3 @@
-from sage.functions.log import logb
-
-
 class Permutation(CombinatorialFreeModule.Element):
 
     def cycles(self):
@@ -161,7 +158,6 @@ def _is_root_extraction(P):
             or len(P.terms()) == 1) and P.leading_coefficient() == 1
 
 
-
 def _roots_extraction(P):
     A = -P.constant_coefficient()
     root = A.sqrt(P.degree())
@@ -178,7 +174,17 @@ def _roots_generic(P):
             if P(A) == 0]
 
 
+# Constants
+
+PP = Permutations()
+C = PP.basis()
+_R.<X> = PP[]
+
+
 # Code for pseudo-injective polynomials, under development
+
+from sage.functions.log import logb
+
 
 def _root_pseudo_injective(self, P):
     # https://doi.org/10.48550/arXiv.2604.04065
@@ -219,10 +225,3 @@ def _anti_lcm(a, b):
 def _seed(P):
     cycles = _cycles(P)
     return cycles[0].size()
-
-
-# Constants
-
-PP = Permutations()
-C = PP.basis()
-_R.<X> = PP[]
