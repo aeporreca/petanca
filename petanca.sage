@@ -57,6 +57,24 @@ class Permutation(CombinatorialFreeModule.Element):
     def _has_negative_terms(self):
         return any(coeff < 0 for coeff in self.coefficients())
 
+    def minimal_polynomial(self):
+        for deg in PositiveIntegers():
+            basis = PP.up_closure(self.cycles())
+            dim = len(basis)
+            nvars = deg + 1
+            A = matrix(ZZ, dim, nvars)
+            for j in range(nvars):
+                B = self^j
+                for i in range(dim):
+                    A[i, j] = B.coefficient(basis[i].size())
+            kernel = A.right_kernel()
+            if not kernel:
+                continue
+            R.<X> = PP[]
+            coeffs = kernel.basis()[0]
+            return R.sum(-coeffs[i] * X^i
+                         for i in range(nvars))
+
 
 class Permutations(CombinatorialFreeModule):
 
@@ -167,8 +185,7 @@ class Permutations(CombinatorialFreeModule):
 
     @staticmethod
     def _solve_linear(P):
-        if P.degree() != 1:
-            raise ValueError(f'{P} is not linear')
+        assert P.degree() == 1
         D = Permutations.down_closure(P.coefficients())
         B = Permutations.up_closure(D)
         return B
@@ -234,3 +251,7 @@ _R.<X> = PP[]
 # This is pseudo-injective
 
 P = C[2]*X^2 + (C[4] + C[6])*X - 16*C[2] - 4*C[4] - 18*C[6] - C[12]
+
+_R.<X, Y> = PP[]
+P = C[2]*X + C[6] + Y
+A = C[2] + 2*C[3] + C[5]
