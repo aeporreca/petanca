@@ -68,14 +68,17 @@ class Permutation(CombinatorialFreeModule.Element):
             power = PP(1)
             for j in range(nvars):
                 for i in range(dim):
-                    A[i, j] = power.coefficient(basis[i].size())
+                    k = basis[i].size() # C[k]
+                    A[i, j] = power.coefficient(k)
                 power *= self
             kernel = A.right_kernel()
             if not kernel:
                 continue
             coeffs = kernel.basis()[0]
-            R.<X> = PP[var]
-            return R.sum(-coeffs[i] * X^i
+            if coeffs[-1] < 0:
+                coeffs *= -1
+            R.<X> = ZZ[var]
+            return R.sum(coeffs[i] * X^i
                          for i in range(nvars))
 
 
