@@ -21,7 +21,7 @@ You can use `from petanca import *` in SageMath from the same directory where th
 ## Basic usage
 
 A permutation is represented as a sum of cycles with their multiplicity.
-A cycle of length $n$ is represented as `C[n]`.
+A cycle of length $n$ (usually denoted $C_n$) is represented by `C[n]` here:
 
 ```sage
 sage: C[3] + 2*C[5] + C[7] + 1
@@ -30,7 +30,18 @@ C[1] + C[3] + 2*C[5] + C[7]
 
 As you can see, `1` is currently displayed as `C[1]`, but both notations can be used in input.
 
-For technical reasons related to the SageMath system (but also seem because it seems practical, at least at the moment), the permutation semiring `PP` (representing the symbol ℙ) is actually implemented as a ring, i.e., additive inverses are also available.
+The semiring operations of sum and product are available, as well as integer exponentiation:
+
+```sage
+sage: C[3] * C[6]
+3*C[6]
+sage: C[3] * C[7]
+C[21]
+sage: (C[2] + C[3])^5
+16*C[2] + 81*C[3] + 475*C[6]
+```
+
+For technical reasons related to the SageMath library (but also seem because it seems practical, at least at the moment), the permutation semiring `PP` (representing the symbol $\mathbb{P}$) is currently implemented as the _ring_ $\mathbb{P}[-1]$, i.e., additive inverses also exist. 
 This allows one to create improper dynamical systems like `C[2] - 1`; if you need to check if a dynamical system is improper, an aptly named method is available:
 
 ```sage
@@ -38,6 +49,13 @@ sage: C[3].is_improper()
 False
 sage: (C[3] - C[2]).is_improper()
 True
+```
+
+Furthermore, be warned that, while $\mathbb{P}$ is an integral semidomain, $\mathbb{P}[-1]$ is _not_ an integral domain (i.e., there exist nontrivial zero divisors):
+
+```sage
+sage: (C[2] - 2) * C[2]
+0
 ```
 
 ## The name of the game
