@@ -14,6 +14,9 @@ class Permutation(CombinatorialFreeModule.Element):
         return int(sum(multiplicity * length
                        for length, multiplicity in self.items()))
 
+    def is_improper(self):
+        return any(coeff < 0 for coeff in self.coefficients())
+
     def is_irreducible(self):
         return (self != PP(0) and self != PP(1) and
                 self.factor() == Factorization([(self, 1)]))
@@ -51,9 +54,6 @@ class Permutation(CombinatorialFreeModule.Element):
                     if A * B == self:
                         return Factorization([(A, 1)]) * B.factor()
         return Factorization([(self, 1)])
-
-    def is_improper(self):
-        return any(coeff < 0 for coeff in self.coefficients())
 
     def minimal_polynomial(self, var='X'):
         for deg in NN:
