@@ -26,19 +26,19 @@ class Permutation(CombinatorialFreeModule.Element):
         # https://doi.org/10.1016/j.tcs.2026.115879
         return False
 
-    def sqrt(self, k=2, all=True):
+    def sqrt(self, k=2):
         # https://doi.org/10.48550/arXiv.2604.04065
-        if self._has_negative_terms():
+        if self.is_improper():
             raise NotImplementedError(
-                f'unable to compute sqrt of {P}')
+                f'unable to compute sqrt of {self}')
         root = PP(0)
         power = PP(0)
         while power.size() < self.size():
             root += min((self - power).cycles())
             power = root^k
         if power != self:
-            return [] if all else None
-        return [root] if all else root
+            return None
+        return root
 
     def factor(self):
         if self == 0:
@@ -56,7 +56,7 @@ class Permutation(CombinatorialFreeModule.Element):
                         return Factorization([(A, 1)]) * B.factor()
         return Factorization([(self, 1)])
 
-    def _has_negative_terms(self):
+    def is_improper(self):
         return any(coeff < 0 for coeff in self.coefficients())
 
     def minimal_polynomial(self, var='X'):
@@ -68,7 +68,7 @@ class Permutation(CombinatorialFreeModule.Element):
             power = PP(1)
             for j in range(nvars):
                 for i in range(dim):
-                    k = basis[i].size() # C[k]
+                    k = basis[i].size()
                     A[i, j] = power.coefficient(k)
                 power *= self
             kernel = A.right_kernel()
@@ -89,9 +89,8 @@ class Permutations(CombinatorialFreeModule):
     def __init__(self):
         CombinatorialFreeModule.__init__(
             self, ZZ, PositiveIntegers(), prefix='C',
-            category=Category.join(
-                (AlgebrasWithBasis(ZZ),
-                 CommutativeRings())))
+            category=Category.join((AlgebrasWithBasis(ZZ),
+                                    CommutativeRings())))
 
     def product_on_basis(self, m, n):
         return gcd(m, n) * C[lcm(m, n)]
@@ -105,6 +104,12 @@ class Permutations(CombinatorialFreeModule):
     def __iter__(self):
         return (A for size in NN
                 for A in PP.of_size(size))
+
+    def is_field(self):
+        return False
+
+    def is_integral_domain(self):
+        return False
 
     @staticmethod
     def irreducibles():
@@ -133,69 +138,11 @@ class Permutations(CombinatorialFreeModule):
                           for cycle in term.cycles()
                           for div in divisors(cycle)))
 
-    @staticmethod
-    def solve(P, all=False):
-        if _is_univariate(P):
-            return PP._solve_univariate(P, all=all)
-        raise NotImplementedError(
-            'unable to solve multivariate equations')
-
-    @staticmethod
-    def _solve_univariate(P, all=False):
-        assert _is_univariate(P)
+    def _roots_univariate_polynomial(self, P, *args, **kwargs):
         if _is_root_extraction(P):
-            return PP._solve_root_extraction(P, all=all)
-        elif _is_pseudo_injective(P):
-            return PP._solve_pseudo_injective(P, all=all)
+            return _roots_extraction(P)
         else:
-            return PP._solve_generic_univariate(P, all=all)
-
-    @staticmethod
-    def _solve_generic_univariate(P, all=False):
-        cycle_len = lambda i: i
-        cardinality = PP.module_morphism(cycle_len, codomain=ZZ)
-        q = P.map_coefficients(cardinality)
-        roots = q.roots(multiplicities=False)
-        solutions = (A for size in roots
-                     for A in PP.of_size(size)
-                     if P(A) == 0)
-        if all:
-            return list(solutions)
-        return next(solutions, None)
-
-    @staticmethod
-    def _solve_root_extraction(P, all=False):
-        assert _is_root_extraction(P)
-        A = -P.constant_coefficient()
-        root = A.sqrt(P.degree())
-        if root is None:
-            return [] if all else None
-        return [root] if all else root
-
-    @staticmethod
-    def _solve_pseudo_injective(P, all=False):
-        # https://doi.org/10.48550/arXiv.2604.04065
-        assert _is_pseudo_injective(P)
-        if all:
-            # TODO: Implement the enumeration algorithm
-            return PP._solve_generic_univariate(P, all=True)
-        B = -P.constant_coefficient()
-        P += B
-        X = PP(0)
-        seed = _seed(P)
-        while P(X) < B:
-            X += C[_anti_lcm(seed, B - P(X))]
-        if P(X) != B:
-            return None
-        return X
-
-    @staticmethod
-    def _solve_linear(P):
-        assert P.degree() == 1
-        D = Permutations.down_closure(P.coefficients())
-        B = Permutations.up_closure(D)
-        return B
-        # TODO: Implement the rest
+            return _roots_generic(P)
 
 
 def _proper_divisor_pairs(n):
@@ -230,9 +177,10 @@ def _is_root_extraction(P):
 
 
 def _is_pseudo_injective(P):
+    const_coeff = P.coefficients()[0]
     nonconst_coeffs = P.coefficients()[1:]
-    if any(coeff._has_negative_terms()
-           for coeff in nonconst_coeffs):
+    if const_coeff > 0 or any(PP(coeff).is_improper()
+                              for coeff in nonconst_coeffs):
         return False
     cycles = _cycles(P)
     seed = cycles[0].size()
@@ -243,6 +191,37 @@ def _is_pseudo_injective(P):
 def _seed(P):
     cycles = _cycles(P)
     return cycles[0].size()
+
+
+def _roots_extraction(P):
+    A = -P.constant_coefficient()
+    root = A.sqrt(P.degree())
+    return [root] if root is not None else []
+
+
+def _roots_generic(P):
+    cycle_len = lambda i: i
+    cardinality = PP.module_morphism(cycle_len, codomain=ZZ)
+    q = P.map_coefficients(cardinality)
+    roots = q.roots(multiplicities=False)
+    return [A for size in roots
+            for A in PP.of_size(size)
+            if P(A) == 0]
+
+
+# TODO: Currently unused, returns a single root,
+# must implement the enumeration algorithm
+def _root_pseudo_injective(self, P):
+    # https://doi.org/10.48550/arXiv.2604.04065
+    B = -P.constant_coefficient()
+    P += B
+    X = PP(0)
+    seed = _seed(P)
+    while P(X) < B:
+        X += C[_anti_lcm(seed, B - P(X))]
+    if P(X) != B:
+        return None
+    return X
 
 
 # Constants
