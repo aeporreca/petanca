@@ -38,7 +38,7 @@ sage: (C[2] + C[3])^5
 16*C[2] + 81*C[3] + 475*C[6]
 ```
 
-For technical reasons related to the SageMath library (but also because it seems practical, at least at the moment), the permutation semiring `PP` (representing the symbol $\mathbb{P}$) is currently implemented as the _ring_ $\mathbb{P}[-1]$, i.e., additive inverses also exist. 
+For technical reasons related to the SageMath library (but also because it seems practical, at least at the moment), the permutation semiring `PP` (representing the symbol $\mathbb{P}$) is currently implemented as the _ring_ $\mathbb{P}[-1]$, i.e., additive inverses also exist.
 This allows one to create improper dynamical systems like `C[2] - 1`; if you need to check if a dynamical system is improper, an aptly named method is available:
 
 ```sage
@@ -168,3 +168,10 @@ This software was written by human beings without any generative AI tools.
 ## License
 
 In order to promote open research, Petanca is distributed under the [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html) license.
+
+
+## Credits
+
+The Petanca software is copyright © 2024 by [Antonio E. Porreca](https://aeporreca.org) and [Rocco Ascone](https://roccoasc1.github.io).
+The development has been partly supported by the French ANR project ANR-24-CE48-7504 [ALARICE](https://alarice.lis-lab.fr) and the EU HORIZON-MSCA-2022-SE-01
+project 101131549 [ACANCOS](https://acancos.units.it).
