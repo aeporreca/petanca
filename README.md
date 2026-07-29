@@ -41,7 +41,7 @@ sage: (C[2] + C[3])^5
 16*C[2] + 81*C[3] + 475*C[6]
 ```
 
-For technical reasons related to the SageMath library (but also seem because it seems practical, at least at the moment), the permutation semiring `PP` (representing the symbol $\mathbb{P}$) is currently implemented as the _ring_ $\mathbb{P}[-1]$, i.e., additive inverses also exist. 
+For technical reasons related to the SageMath library (but also because it seems practical, at least at the moment), the permutation semiring `PP` (representing the symbol $\mathbb{P}$) is currently implemented as the _ring_ $\mathbb{P}[-1]$, i.e., additive inverses also exist. 
 This allows one to create improper dynamical systems like `C[2] - 1`; if you need to check if a dynamical system is improper, an aptly named method is available:
 
 ```sage
@@ -56,6 +56,33 @@ Furthermore, be warned that, while $\mathbb{P}$ is an integral semidomain, $\mat
 ```sage
 sage: (C[2] - 2) * C[2]
 0
+```
+
+The following methods and functions should be more or less self-explanatory:
+
+```sage
+sage: (C[2] + 3*C[3]).cycles()
+[C[2], C[3]]
+sage: C[2].is_cycle()
+True
+sage: (C[2] + C[3]).is_cycle()
+False
+sage: (C[2] + C[3]).size()
+5
+sage: (C[2] + C[3]).is_irreducible()
+True
+sage: (C[2] * C[3]).is_irreducible()
+False
+sage: (C[2] + C[3]).is_prime()
+False
+sage: factor(C[2] * C[3] * (C[4] + 1))
+(C[1] + C[4]) * C[2] * C[3]
+sage: list(factor(C[2] * C[3] * (C[4] + 1)))
+[(C[1] + C[4], 1), (C[2], 1), (C[3], 1)]
+sage: sqrt((C[2] + C[3])^2)
+C[2] + C[3]
+sqrt((C[3] + 2*C[7])^3, 3)
+C[3] + 2*C[7]
 ```
 
 ## The name of the game
