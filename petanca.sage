@@ -15,12 +15,8 @@ class Permutation(CombinatorialFreeModule.Element):
                        for length, multiplicity in self.items()))
 
     def is_irreducible(self):
-        if self == 0 or self == 1:
-            return False
-        return all(A * B != self
-                   for m, n in _proper_divisor_pairs(self.size())
-                   for A in PP.of_size(m)
-                   for B in PP.of_size(n))
+        return (self != PP(0) and self != PP(1) and
+                self.factor() == Factorization([(self, 1)]))
 
     def is_prime(self):
         # https://doi.org/10.1016/j.tcs.2026.115879
@@ -151,17 +147,6 @@ def _proper_divisor_pairs(n):
              if n % d == 0)
 
 
-def _anti_lcm(a, b):
-    if a not in NN:
-        a = min(a.cycles()).size()
-    if b not in NN:
-        b = min(b.cycles()).size()
-    if b % a != 0:
-        raise ValueError(f'{a} does not divide {b}')
-    k = ceil(logb(b, 2))
-    return gcd(int(b/a)^k, b)
-
-
 def _cycles(P):
     return sorted(x for c in P.coefficients()
                   for x in c.cycles())
@@ -175,22 +160,6 @@ def _is_root_extraction(P):
     return (len(P.terms()) == 2 and min(P.exponents()) == 0
             or len(P.terms()) == 1) and P.leading_coefficient() == 1
 
-
-def _is_pseudo_injective(P):
-    const_coeff = P.coefficients()[0]
-    nonconst_coeffs = P.coefficients()[1:]
-    if const_coeff > 0 or any(PP(coeff).is_improper()
-                              for coeff in nonconst_coeffs):
-        return False
-    cycles = _cycles(P)
-    seed = cycles[0].size()
-    return all(cycle.size() % seed == 0
-               for cycle in cycles)
-
-
-def _seed(P):
-    cycles = _cycles(P)
-    return cycles[0].size()
 
 
 def _roots_extraction(P):
@@ -209,8 +178,8 @@ def _roots_generic(P):
             if P(A) == 0]
 
 
-# TODO: Currently unused, returns a single root,
-# must implement the enumeration algorithm
+# Code for pseudo-injective polynomials, under development
+
 def _root_pseudo_injective(self, P):
     # https://doi.org/10.48550/arXiv.2604.04065
     B = -P.constant_coefficient()
@@ -222,6 +191,34 @@ def _root_pseudo_injective(self, P):
     if P(X) != B:
         return None
     return X
+
+
+def _is_pseudo_injective(P):
+    const_coeff = P.coefficients()[0]
+    nonconst_coeffs = P.coefficients()[1:]
+    if const_coeff > 0 or any(PP(coeff).is_improper()
+                              for coeff in nonconst_coeffs):
+        return False
+    cycles = _cycles(P)
+    seed = cycles[0].size()
+    return all(cycle.size() % seed == 0
+               for cycle in cycles)
+
+
+def _anti_lcm(a, b):
+    if a not in NN:
+        a = min(a.cycles()).size()
+    if b not in NN:
+        b = min(b.cycles()).size()
+    if b % a != 0:
+        raise ValueError(f'{a} does not divide {b}')
+    k = ceil(logb(b, 2))
+    return gcd(int(b/a)^k, b)
+
+
+def _seed(P):
+    cycles = _cycles(P)
+    return cycles[0].size()
 
 
 # Constants
