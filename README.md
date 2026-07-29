@@ -85,11 +85,11 @@ False
 sage: (C[2] + C[3]).is_prime()
 False
 
-sage: factor(C[2] * C[3] * (C[4] + 1))
-(C[1] + C[4]) * C[2] * C[3]
+sage: factor(C[2]^2 * C[3] * (C[4] + 1))
+(C[1] + C[4]) * C[2]^2 * C[3]
 
-sage: list(factor(C[2] * C[3] * (C[4] + 1)))
-[(C[1] + C[4], 1), (C[2], 1), (C[3], 1)]
+sage: list(factor(C[2]^2 * C[3] * (C[4] + 1)))
+[(C[1] + C[4], 1), (C[2], 2), (C[3], 1)]
 
 sage: sqrt((C[2] + C[3])^2)
 C[2] + C[3]
@@ -97,6 +97,64 @@ C[2] + C[3]
 sage: sqrt((C[3] + 2*C[7])^3, 3)
 C[3] + 2*C[7]
 ```
+
+Furthermore, the elements of `PP` can be enumerated in several ways:
+
+```sage
+sage: list(PP.of_size(4))
+[C[4], C[1] + C[3], 2*C[2], 2*C[1] + C[2], 4*C[1]]
+
+sage: list(PP.irreducibles_of_size(4))
+[C[4], C[1] + C[3], 2*C[1] + C[2]]
+```
+
+The whole set (resp., the set of irreducibles) can be enumerated with `for A in PP` (resp., `for A in PP.irreducibles()`).
+
+
+## Polynomials
+
+You can also define polynomials over `PP`:
+
+```sage: C[4]*X^3 + 3*C[2]*X + C[7]
+C[4]*X^3 + 3*C[2]*X + C[7]
+
+sage: (X + C[3])*(X + C[7])
+C[1]*X^2 + (C[3] + C[7])*X + C[21]
+```
+
+The variable `X` is predefined, but if you need more you can create them:
+
+```sage
+sage: R.<Y> = PP[]
+
+sage: C[7]*Y^2 + C[3]*Y + 5
+C[7]*Y^2 + C[3]*Y + 5*C[1]
+```
+
+You can find the minimal polynomial of a permutation `A` over the integers `ZZ` (i.e., the monic polynomial with coefficients in $\mathbb{Z}$ of minimum degree having `A` as a root):
+
+```sage
+sage: minimal_polynomial(C[2])
+x^2 - 2*x
+sage: minimal_polynomial(C[2] + C[3])
+x^4 - 10*x^3 + 31*x^2 - 30*x
+```
+
+And you can find all roots of univariate polynomials:
+
+```sage
+sage: (X^2 - 5*X).roots()
+[C[5], 5*C[1], 0]
+
+sage: minimal_polynomial(C[2] + C[3]).roots(ring=PP)
+[C[5], C[2] + C[3], 2*C[1] + C[3], 3*C[1] + C[2], 5*C[1], C[3], 3*C[1], C[2], 2*C[1], 0]
+```
+
+
+## Coming features
+
+- Solving multivariate linear equations
+
 
 ## The name of the game
 
