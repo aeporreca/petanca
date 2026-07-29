@@ -35,8 +35,10 @@ The semiring operations of sum and product are available, as well as integer exp
 ```sage
 sage: C[3] * C[6]
 3*C[6]
+
 sage: C[3] * C[7]
 C[21]
+
 sage: (C[2] + C[3])^5
 16*C[2] + 81*C[3] + 475*C[6]
 ```
@@ -47,6 +49,7 @@ This allows one to create improper dynamical systems like `C[2] - 1`; if you nee
 ```sage
 sage: C[3].is_improper()
 False
+
 sage: (C[3] - C[2]).is_improper()
 True
 ```
@@ -63,25 +66,35 @@ The following methods and functions should be more or less self-explanatory:
 ```sage
 sage: (C[2] + 3*C[3]).cycles()
 [C[2], C[3]]
+
 sage: C[2].is_cycle()
 True
+
 sage: (C[2] + C[3]).is_cycle()
 False
+
 sage: (C[2] + C[3]).size()
 5
+
 sage: (C[2] + C[3]).is_irreducible()
 True
+
 sage: (C[2] * C[3]).is_irreducible()
 False
+
 sage: (C[2] + C[3]).is_prime()
 False
+
 sage: factor(C[2] * C[3] * (C[4] + 1))
 (C[1] + C[4]) * C[2] * C[3]
+
 sage: list(factor(C[2] * C[3] * (C[4] + 1)))
 [(C[1] + C[4], 1), (C[2], 1), (C[3], 1)]
+
 sage: sqrt((C[2] + C[3])^2)
 C[2] + C[3]
-sqrt((C[3] + 2*C[7])^3, 3)
+
+sage: sqrt((C[3] + 2*C[7])^3, 3)
 C[3] + 2*C[7]
 ```
 
