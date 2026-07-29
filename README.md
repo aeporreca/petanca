@@ -7,14 +7,9 @@ At the moment, only permutations (bijective dynamical systems) are being impleme
 Hopefully, one day non-bijective ones will come too.
 
 
-## License
-
-In order to promote open research and teaching, Petanca is distributed under the [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html) license.
-
-
 ## Installation
 
-You can use ```python from petanca import *``` in SageMath from the same directory where the file `petanca.py` is located.
+You can use `from petanca import *` in SageMath from the same directory where the file `petanca.py` is located.
 (In case you need to know, this file is obtained with `sage --preparse petanca.sage; mv petanca.sage.py petanca.py`.)
 
 
@@ -168,3 +163,8 @@ Furthermore, bijective dynamical systems, when they are depicted as graphs (i.e.
 ## AI statement
 
 This software was written by human beings without any generative AI tools.
+
+
+## License
+
+In order to promote open research, Petanca is distributed under the [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html) license.
