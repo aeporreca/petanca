@@ -107,7 +107,7 @@ sage: list(PP.irreducibles_of_size(4))
 [C[4], C[1] + C[3], 2*C[1] + C[2]]
 ```
 
-The whole set (resp., the set of irreducibles) can be enumerated with `for A in PP` (resp., `for A in PP.irreducibles()`).
+The whole set (resp., the whole set of irreducibles) can be enumerated with `for A in PP` (resp., `for A in PP.irreducibles()`).
 
 
 ## Polynomials
