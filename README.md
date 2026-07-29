@@ -15,7 +15,7 @@ You can use `from petanca import *` in SageMath from the same directory where th
 
 ## Basic usage
 
-A permutation is represented as a sum of cycles with their multiplicity.
+A permutation up to isomorphism is as a sum of cycles with their multiplicity.
 A cycle of length $n$ (usually denoted $C_n$) is represented by `C[n]` here:
 
 ```sage
