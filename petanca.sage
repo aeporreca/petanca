@@ -26,10 +26,11 @@ class Permutation(CombinatorialFreeModule.Element):
         # https://doi.org/10.1016/j.tcs.2026.115879
         return False
 
-    def sqrt(self, k=2):
+    def sqrt(self, k=2, all=True):
         # https://doi.org/10.48550/arXiv.2604.04065
         if self._has_negative_terms():
-            raise NotImplementedError(f'unable to compute sqrt of {P}')
+            raise NotImplementedError(
+                f'unable to compute sqrt of {P}')
         root = PP(0)
         power = PP(0)
         while power.size() < self.size():
@@ -37,11 +38,15 @@ class Permutation(CombinatorialFreeModule.Element):
             power = root^k
         if power != self:
             return None
-        return root
+        if all:
+            return [root]
+        else:
+            return root
 
     def factor(self):
         if self == 0:
-            raise ArithmeticError('factorization of 0 is not defined')
+            raise ArithmeticError(
+                'factorization of 0 is not defined')
         if self == 1:
             return Factorization([])
         if self.is_cycle():
@@ -68,10 +73,10 @@ class Permutation(CombinatorialFreeModule.Element):
                 for i in range(dim):
                     A[i, j] = B.coefficient(basis[i].size())
             kernel = A.right_kernel()
+            coeffs = kernel.basis()[0]
             if not kernel:
                 continue
             R.<X> = PP[var]
-            coeffs = kernel.basis()[0]
             return R.sum(-coeffs[i] * X^i
                          for i in range(nvars))
 
@@ -244,14 +249,3 @@ def _seed(P):
 PP = Permutations()
 C = PP.basis()
 _R.<X> = PP[]
-
-
-# Tests
-
-# This is pseudo-injective
-
-P = C[2]*X^2 + (C[4] + C[6])*X - 16*C[2] - 4*C[4] - 18*C[6] - C[12]
-
-# _R.<X, Y> = PP[]
-# P = C[2]*X + C[6] + Y
-# A = C[2] + 2*C[3] + C[5]
