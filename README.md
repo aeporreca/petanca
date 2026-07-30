@@ -20,7 +20,7 @@ A permutation up to isomorphism is a sum of cycles with their multiplicity.
 A cycle of length $n$ (usually denoted $C_n$) is represented by `C[n]` here:
 
 ```sage
-sage: C[3] + 2*C[5] + C[7] + 1
+sage: 1 + 2*C[5] + C[3] + C[7]
 C[7] + 2*C[5] + C[3] + 1
 ```
 
