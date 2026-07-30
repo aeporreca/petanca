@@ -207,7 +207,7 @@ class Permutations(CombinatorialFreeModule):
             milp.solve()
         except MIPSolverException:
             return None
-        sol = vector(milp.get_values(x, convert=ZZ, tolerance=_sage_const_0p001 )
+        sol = vector(milp.get_values(x, convert=ZZ, tolerance=_sage_const_0p001 ))
         return tuple(PP.sum(basis[j] * sol[k*dim + j]
                             for j in range(dim))
                      for k in range(P.nvariables()))
@@ -233,7 +233,7 @@ def _is_improper_polynomial(P):
 
 PP = Permutations()
 C = PP.basis()
-_R.<X> = PP[]
+_R = PP['X']; (X,) = _R._first_ngens(1)
 
 
 # Code for pseudo-injective polynomials, under development
