@@ -56,10 +56,10 @@ class Permutation(CombinatorialFreeModule.Element):
         return root
 
     def factor(self):
-        if self == 0:
+        if self == PP(0):
             raise ArithmeticError(
                 'factorization of 0 is not defined')
-        if self == 1:
+        if self == PP(1):
             return Factorization([])
         if self.is_cycle():
             F = factor(self.size())
@@ -72,6 +72,7 @@ class Permutation(CombinatorialFreeModule.Element):
         return Factorization([(self, 1)])
 
     def minimal_polynomial(self, var='X'):
+        # This loop will eventually halt
         for deg in NN:
             basis = PP.up_closure(self.cycles())
             dim = len(basis)
@@ -151,10 +152,16 @@ class Permutations(CombinatorialFreeModule):
                           for div in divisors(cycle)))
 
     def _roots_univariate_polynomial(self, P, *args, **kwargs):
-        if _is_root_extraction(P):
-            return _roots_extraction(P)
-        else:
-            return _roots_generic(P)
+        # Only returns proper roots
+        if _is_improper_polynomial(P):
+            raise NotImplementedError
+        cycle_len = lambda i: i
+        cardinality = PP.module_morphism(cycle_len, codomain=ZZ)
+        q = P.map_coefficients(cardinality)
+        roots = q.roots(multiplicities=False)
+        return [A for size in roots
+                for A in PP.of_size(size)
+                if P(A) == 0]
 
 
 def _proper_divisor_pairs(n):
@@ -168,29 +175,9 @@ def _cycles(P):
                   for x in c.cycles())
 
 
-def _is_univariate(P):
-    return len(P.parent().gens()) <= 1
-
-
-def _is_root_extraction(P):
-    return (len(P.terms()) == 2 and min(P.exponents()) == 0
-            or len(P.terms()) == 1) and P.leading_coefficient() == 1
-
-
-def _roots_extraction(P):
-    A = -P.constant_coefficient()
-    root = A.sqrt(P.degree())
-    return [root] if root is not None else []
-
-
-def _roots_generic(P):
-    cycle_len = lambda i: i
-    cardinality = PP.module_morphism(cycle_len, codomain=ZZ)
-    q = P.map_coefficients(cardinality)
-    roots = q.roots(multiplicities=False)
-    return [A for size in roots
-            for A in PP.of_size(size)
-            if P(A) == 0]
+def _is_improper_polynomial(P):
+    return any(A.is_improper() and (-A).is_improper()
+               for A in P.coefficients())
 
 
 # Constants
