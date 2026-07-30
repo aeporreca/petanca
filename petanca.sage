@@ -225,7 +225,7 @@ def _is_pseudo_injective(P):
                               for coeff in nonconst_coeffs):
         return False
     cycles = _cycles(P)
-    seed = cycles[0].size()
+    seed = _seed(P)
     return all(cycle.size() % seed == 0
                for cycle in cycles)
 
