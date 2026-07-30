@@ -9,7 +9,7 @@ Hopefully, one day non-bijective ones will come too.
 
 ## Installation
 
-You can either load the `petanca.sage` file directly, or use `from petanca import *` in SageMath from the same directory where the file `petanca.py` is located.
+You can either load the [`petanca.sage`](https://raw.githubusercontent.com/aeporreca/petanca/refs/heads/main/petanca.sage) file directly, or use `from petanca import *` in SageMath from the same directory where the file [`petanca.py`](https://raw.githubusercontent.com/aeporreca/petanca/refs/heads/main/petanca.py) is located.
 
 (In case you need to know, the `petanca.py` file is obtained with `sage --preparse petanca.sage; mv petanca.sage.py petanca.py`.)
 
