@@ -2,4 +2,4 @@
 
 sage --preparse petanca.sage
 mv petanca.sage.py petanca.py
-git add 
+git add petanca.py
