@@ -168,7 +168,7 @@ Furthermore, bijective dynamical systems, when they are depicted as graphs (i.e.
 
 ## AI statement
 
-This software was written by human beings without any generative AI tools.
+This software was written without any generative AI tools.
 
 
 ## License
