@@ -267,9 +267,3 @@ def _anti_lcm(a, b):
 def _seed(P):
     cycles = _polynomial_cycles(P)
     return cycles[0].size()
-
-
-# Test
-
-_R.<X, Y> = PP[]
-P = C[2]*X + C[3]*Y - C[2]
