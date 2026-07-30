@@ -155,6 +155,7 @@ sage: minimal_polynomial(C[2] + C[3]).roots(ring=PP)
 And one root for linear multivariate polynomials:
 
 ```sage
+sage: R.<X, Y> = PP[]
 sage: PP.solve_linear(C[2]*X + 3*Y - C[6] - 6*C[7])
 (C[3], 2*C[7])
 ```

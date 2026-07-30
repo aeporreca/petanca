@@ -176,9 +176,8 @@ class Permutations(CombinatorialFreeModule):
         basis = PP.up_closure(down)
         dim = len(basis)
         vars = P.variables()
-        nvars = P.nvariables()
-        M = matrix(ZZ, dim, dim * nvars)
-        for k in range(nvars):
+        M = matrix(ZZ, dim, dim * P.nvariables())
+        for k in range(P.nvariables()):
             for j in range(dim):
                 A = (P.coefficient(vars[k])*basis[j]).constant_coefficient()
                 for i in range(dim):
@@ -197,7 +196,7 @@ class Permutations(CombinatorialFreeModule):
         sol = vector(milp.get_values(x, convert=ZZ, tolerance=1e-3))
         return tuple(PP.sum(basis[j] * sol[k*dim + j]
                             for j in range(dim))
-                     for k in range(nvars))
+                     for k in range(P.nvariables()))
 
 
 def _proper_divisor_pairs(n):
