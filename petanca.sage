@@ -17,6 +17,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+from sage.numerical.mip import MIPSolverException
+
+
 class Permutation(CombinatorialFreeModule.Element):
 
     def cycles(self):
@@ -163,6 +166,39 @@ class Permutations(CombinatorialFreeModule):
                 for A in PP.of_size(size)
                 if P(A) == 0]
 
+    @staticmethod
+    def solve_linear(P):
+        if P.degree() > 1 or _is_improper_polynomial(P):
+            raise NotImplementedError(
+                'root finding for this polynomial not implemented')
+        cycles = _polynomial_cycles(P)
+        down = PP.down_closure(cycles)
+        basis = PP.up_closure(down)
+        dim = len(basis)
+        vars = P.variables()
+        nvars = P.nvariables()
+        M = matrix(ZZ, dim, dim * nvars)
+        for k in range(nvars):
+            for j in range(dim):
+                A = (P.coefficient(vars[k])*basis[j]).constant_coefficient()
+                for i in range(dim):
+                    M[i, k*dim + j] = A.coefficient(basis[i].size())
+        v = vector(ZZ, dim)
+        B = -P.constant_coefficient()
+        for i in range(dim):
+            v[i] = B.coefficient(basis[i].size())
+        milp = MixedIntegerLinearProgram()
+        x = milp.new_variable(integer=True, nonnegative=True)
+        milp.add_constraint(M * x == v)
+        try:
+            milp.solve()
+        except MIPSolverException:
+            return None
+        sol = vector(milp.get_values(x, convert=ZZ, tolerance=1e-3))
+        return tuple(PP.sum(basis[j] * sol[k*dim + j]
+                            for j in range(dim))
+                     for k in range(nvars))
+
 
 def _proper_divisor_pairs(n):
     return ((d, n // d)
@@ -170,9 +206,9 @@ def _proper_divisor_pairs(n):
              if n % d == 0)
 
 
-def _cycles(P):
-    return sorted(x for c in P.coefficients()
-                  for x in c.cycles())
+def _polynomial_cycles(P):
+    return sorted(cycle for A in P.coefficients()
+                  for cycle in A.cycles())
 
 
 def _is_improper_polynomial(P):
@@ -211,7 +247,7 @@ def _is_pseudo_injective(P):
     if const_coeff > 0 or any(PP(coeff).is_improper()
                               for coeff in nonconst_coeffs):
         return False
-    cycles = _cycles(P)
+    cycles = _polynomial_cycles(P)
     seed = _seed(P)
     return all(cycle.size() % seed == 0
                for cycle in cycles)
@@ -229,5 +265,11 @@ def _anti_lcm(a, b):
 
 
 def _seed(P):
-    cycles = _cycles(P)
+    cycles = _polynomial_cycles(P)
     return cycles[0].size()
+
+
+# Test
+
+_R.<X, Y> = PP[]
+P = C[2]*X + C[3]*Y - C[2]
