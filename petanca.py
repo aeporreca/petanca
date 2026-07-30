@@ -170,7 +170,8 @@ class Permutations(CombinatorialFreeModule):
     def _roots_univariate_polynomial(self, P, *args, **kwargs):
         # Only returns proper roots
         if _is_improper_polynomial(P):
-            raise NotImplementedError
+            raise NotImplementedError(
+                'root finding for this polynomial not implemented')
         cycle_len = lambda i: i
         cardinality = PP.module_morphism(cycle_len, codomain=ZZ)
         q = P.map_coefficients(cardinality)
