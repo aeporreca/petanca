@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sage --preparse petanca.sage
+mv petanca.sage.py petanca.py
+git add 
