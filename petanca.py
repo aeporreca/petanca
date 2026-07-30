@@ -27,6 +27,9 @@ from sage.numerical.mip import MIPSolverException
 
 class Permutation(CombinatorialFreeModule.Element):
 
+    def _sorted_items_for_printing(self):
+        return reversed(super()._sorted_items_for_printing())
+
     def cycles(self):
         return sorted(term.leading_term().leading_monomial()
                       for term in self.terms())
@@ -122,6 +125,11 @@ class Permutations(CombinatorialFreeModule):
     def _repr_(self):
         return '(Semi)ring of Permutations'
 
+    def _repr_term(self, term):
+        if term == _sage_const_1 :
+            return '1'
+        return super()._repr_term(term)
+
     def __iter__(self):
         return (A for size in NN
                 for A in PP.of_size(size))
@@ -167,9 +175,9 @@ class Permutations(CombinatorialFreeModule):
         cardinality = PP.module_morphism(cycle_len, codomain=ZZ)
         q = P.map_coefficients(cardinality)
         roots = q.roots(multiplicities=False)
-        return [A for size in roots
-                for A in PP.of_size(size)
-                if P(A) == _sage_const_0 ]
+        return list(reversed([A for size in roots
+                              for A in PP.of_size(size)
+                              if P(A) == _sage_const_0 ]))
 
     @staticmethod
     def solve_linear(P):

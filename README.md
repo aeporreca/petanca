@@ -21,10 +21,8 @@ A cycle of length $n$ (usually denoted $C_n$) is represented by `C[n]` here:
 
 ```sage
 sage: C[3] + 2*C[5] + C[7] + 1
-C[1] + C[3] + 2*C[5] + C[7]
+C[7] + 2*C[5] + C[3] + 1
 ```
-
-As you can see, `1` is currently displayed as `C[1]`, but both notations can be used in input.
 
 The semiring operations of sum and product are available, as well as integer exponentiation:
 
@@ -36,7 +34,7 @@ sage: C[3] * C[7]
 C[21]
 
 sage: (C[2] + C[3])^5
-16*C[2] + 81*C[3] + 475*C[6]
+475*C[6] + 81*C[3] + 16*C[2]
 ```
 
 For technical reasons related to the SageMath library (but also because it seems practical, at least at the moment), the permutation semiring `PP` (representing the symbol $\mathbb{P}$) is currently implemented as the _ring_ $\mathbb{P}[-1]$, i.e., additive inverses also exist.
@@ -82,27 +80,27 @@ sage: (C[2] + C[3]).is_prime()
 False
 
 sage: sqrt((C[2] + C[3])^2)
-C[2] + C[3]
+C[3] + C[2]
 
 sage: sqrt((C[3] + 2*C[7])^3, 3)
-C[3] + 2*C[7]
+2*C[7] + C[3]
 ```
 
 The `factor` function computes one (among the many possible) factorisations into irreducibles of a permutation:
 
 ```sage
 sage: factor(C[2]^2 * C[3] * (C[4] + 1))
-(C[1] + C[4]) * C[2]^2 * C[3]
+(C[4] + 1) * C[2]^2 * C[3]
 
 sage: list(factor(C[2]^2 * C[3] * (C[4] + 1)))
-[(C[1] + C[4], 1), (C[2], 2), (C[3], 1)]
+[(C[4] + 1, 1), (C[2], 2), (C[3], 1)]
 ```
 
 Furthermore, the elements of `PP` can be enumerated in several ways:
 
 ```sage
 sage: list(PP.of_size(4))
-[C[4], C[1] + C[3], 2*C[2], 2*C[1] + C[2], 4*C[1]]
+[C[4], C[3] + 1, 2*C[2], C[2] + 2, 4]
 
 sage: list(PP.irreducibles_of_size(4))
 [C[4], C[1] + C[3], 2*C[1] + C[2]]
@@ -120,7 +118,7 @@ sage: C[4]*X^3 + 3*C[2]*X + C[7]
 C[4]*X^3 + 3*C[2]*X + C[7]
 
 sage: (X + C[3])*(X + C[7])
-C[1]*X^2 + (C[3] + C[7])*X + C[21]
+X^2 + (C[7] + C[3])*X + C[21]
 ```
 
 The variable `X` is predefined, but if you need more you can create them:
@@ -129,7 +127,7 @@ The variable `X` is predefined, but if you need more you can create them:
 sage: R.<Y> = PP[]
 
 sage: C[7]*Y^2 + C[3]*Y + 5
-C[7]*Y^2 + C[3]*Y + 5*C[1]
+C[7]*Y^2 + C[3]*Y + 5
 ```
 
 You can find the minimal polynomial of a permutation `A` over the integers `ZZ` (i.e., the monic polynomial with coefficients in $\mathbb{Z}$ of minimum degree having `A` as a root):
@@ -145,11 +143,10 @@ You can find all roots of univariate polynomials:
 
 ```sage
 sage: (X^2 - 5*X).roots()
-[C[5], 5*C[1], 0]
+[0, 5, C[5]]
 
 sage: minimal_polynomial(C[2] + C[3]).roots(ring=PP)
-[C[5], C[2] + C[3], 2*C[1] + C[3], 3*C[1] + C[2],
-5*C[1], C[3], 3*C[1], C[2], 2*C[1], 0]
+[0, 2, C[2], 3, C[3], 5, C[2] + 3, C[3] + 2, C[3] + C[2], C[5]]
 ```
 
 And one root for linear multivariate polynomials:
