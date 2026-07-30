@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if git diff --cached --quiet -- petanca.sage; then
+if ! git diff --cached --quiet -- petanca.sage; then
     echo 'Recompiling petanca.sage'
     sage --preparse petanca.sage
     mv petanca.sage.py petanca.py
