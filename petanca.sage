@@ -189,7 +189,7 @@ class Permutations(CombinatorialFreeModule):
             milp.solve()
         except MIPSolverException:
             return None
-        sol = vector(milp.get_values(x, convert=ZZ, tolerance=0.001))
+        sol = milp.get_values(x, convert=ZZ, tolerance=0.001)
         return tuple(PP.sum(basis[j] * sol[k*dim + j]
                             for j in range(dim))
                      for k in range(P.nvariables()))
