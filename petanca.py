@@ -185,21 +185,8 @@ class Permutations(CombinatorialFreeModule):
         if P.degree() > _sage_const_1  or _is_improper_polynomial(P):
             raise NotImplementedError(
                 'root finding for this polynomial not implemented')
-        cycles = _polynomial_cycles(P)
-        down = PP.down_closure(cycles)
-        basis = PP.up_closure(down)
+        M, v, basis = _polynomial_as_integer_equations(P)
         dim = len(basis)
-        vars = P.variables()
-        M = matrix(ZZ, dim, dim * P.nvariables())
-        for k in range(P.nvariables()):
-            for j in range(dim):
-                A = (P.coefficient(vars[k])*basis[j]).constant_coefficient()
-                for i in range(dim):
-                    M[i, k*dim + j] = A.coefficient(basis[i].size())
-        v = vector(ZZ, dim)
-        B = -P.constant_coefficient()
-        for i in range(dim):
-            v[i] = B.coefficient(basis[i].size())
         milp = MixedIntegerLinearProgram()
         x = milp.new_variable(integer=True, nonnegative=True)
         milp.add_constraint(M * x == v)
@@ -227,6 +214,25 @@ def _polynomial_cycles(P):
 def _is_improper_polynomial(P):
     return any(A.is_improper() and (-A).is_improper()
                for A in P.coefficients())
+
+
+def _polynomial_as_integer_equations(P):
+    cycles = _polynomial_cycles(P)
+    down = PP.down_closure(cycles)
+    basis = PP.up_closure(down)
+    dim = len(basis)
+    vars = P.variables()
+    M = matrix(ZZ, dim, dim * P.nvariables())
+    for k in range(P.nvariables()):
+        for j in range(dim):
+            A = (P.coefficient(vars[k])*basis[j]).constant_coefficient()
+            for i in range(dim):
+                M[i, k*dim + j] = A.coefficient(basis[i].size())
+    v = vector(ZZ, dim)
+    B = -P.constant_coefficient()
+    for i in range(dim):
+        v[i] = B.coefficient(basis[i].size())
+    return M, v, basis
 
 
 # Constants
