@@ -22,6 +22,7 @@ _sage_const_1 = Integer(1); _sage_const_0 = Integer(0); _sage_const_2 = Integer(
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+import itertools as it
 from sage.numerical.mip import MIPSolverException
 
 
