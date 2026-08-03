@@ -186,7 +186,7 @@ class Permutations(CombinatorialFreeModule):
         if P.degree() > 1 or _is_improper_polynomial(P):
             raise NotImplementedError(
                 'root finding for this polynomial not implemented')
-        M, v, basis = _polynomial_as_integer_equations(P)
+        M, v, basis = _as_linear_system(P)
         dim = len(basis)
         milp = MixedIntegerLinearProgram()
         x = milp.new_variable(integer=True, nonnegative=True)
@@ -217,7 +217,7 @@ def _is_improper_polynomial(P):
                for A in P.coefficients())
 
 
-def _polynomial_as_integer_equations(P):
+def _as_linear_system(P):
     cycles = _polynomial_cycles(P)
     down = PP.down_closure(cycles)
     basis = PP.up_closure(down)
