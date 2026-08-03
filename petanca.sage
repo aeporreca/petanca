@@ -200,6 +200,15 @@ class Permutations(CombinatorialFreeModule):
                             for j in range(dim))
                      for k in range(P.nvariables()))
 
+    @staticmethod
+    def solve_multivariate(P):
+        nvars = P.nvariables()
+        for sizes in cartesian_product([NN] * nvars):
+            prod = (PP.of_size(size) for size in sizes)
+            for A in it.product(*prod):
+                if P(A) == 0:
+                    yield dict(zip(P.variables(), A))
+
 
 def _proper_divisor_pairs(n):
     return ((d, n // d)
