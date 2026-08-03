@@ -111,10 +111,10 @@ class Permutations(CombinatorialFreeModule):
     Element = Permutation
 
     def __init__(self):
-        CombinatorialFreeModule.__init__(
-            self, ZZ, PositiveIntegers(), prefix='C',
-            category=Category.join((AlgebrasWithBasis(ZZ),
-                                    CommutativeRings())))
+        cat = (AlgebrasWithBasis(ZZ), CommutativeRings(),
+               InfiniteEnumeratedSets())
+        CombinatorialFreeModule.__init__(self, ZZ, PositiveIntegers(),
+                                         prefix='C', category=cat)
 
     def product_on_basis(self, m, n):
         return gcd(m, n) * C[lcm(m, n)]
@@ -139,6 +139,12 @@ class Permutations(CombinatorialFreeModule):
 
     def is_integral_domain(self):
         return False
+
+    def rank(self, e):
+        # TODO: make efficient
+        for i, f in zip(NN, PP):
+            if f == e:
+                return i
 
     @staticmethod
     def irreducibles():
