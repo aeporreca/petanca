@@ -208,7 +208,7 @@ class Permutations(CombinatorialFreeModule):
             prod = (PP.of_size(size) for size in sizes)
             for A in it.product(*prod):
                 if P(A) == 0:
-                    yield dict(zip(P.variables(), A))
+                    yield A
 
 
 def _proper_divisor_pairs(n):
