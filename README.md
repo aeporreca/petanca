@@ -139,7 +139,7 @@ sage: minimal_polynomial(C[2] + C[3])
 x^4 - 10*x^3 + 31*x^2 - 30*x
 ```
 
-You can find all roots of univariate polynomials:
+You can find all (proper) roots of univariate polynomials:
 
 ```sage
 sage: (X^2 - 5*X).roots()
@@ -149,7 +149,7 @@ sage: minimal_polynomial(C[2] + C[3]).roots(ring=PP)
 [0, 2, C[2], 3, C[3], 5, C[2] + 3, C[3] + 2, C[3] + C[2], C[5]]
 ```
 
-And one root for linear multivariate polynomials:
+And one (proper) root for linear multivariate polynomials:
 
 ```sage
 sage: R.<X, Y> = PP[]
@@ -157,7 +157,7 @@ sage: PP.solve_linear(C[2]*X + 3*Y - C[6] - 6*C[7])
 (C[3], 2*C[7])
 ```
 
-You can also find roots for arbitrary multivariate polynomials, but this never halts (even if there is only a finite number of roots):
+You can also find (proper) roots for arbitrary multivariate polynomials, but this never halts (even if there is only a finite number of roots):
 
 ```sage
 sage: for sol in PP.solve_multivariate(X^2 - 3*Y + 5): print(sol)
