@@ -157,6 +157,24 @@ sage: PP.solve_linear(C[2]*X + 3*Y - C[6] - 6*C[7])
 (C[3], 2*C[7])
 ```
 
+You can also find roots for arbitrary multivariate polynomials, but this never halts (even if there is only a finite number of roots):
+
+```sage
+sage: for sol in PP.solve_multivariate(X^2 - 3*Y + 5): print(sol)
+(1, 2)
+(2, 3)
+(C[2] + 2, 2*C[2] + 3)
+(4, 7)
+(C[4] + 1, 2*C[4] + 2)
+(2*C[2] + 1, 4*C[2] + 2)
+(5, 10)
+(C[5] + 2, 3*C[5] + 3)
+(3*C[2] + 1, 8*C[2] + 2)
+(C[2] + 5, 4*C[2] + 10)
+(7, 18)
+[…]
+```
+
 
 ## The name of the game
 
