@@ -203,7 +203,7 @@ class Permutations(CombinatorialFreeModule):
 
     @staticmethod
     def solve_multivariate(P):
-        nvars = P.nvariables()
+        nvars = P.parent().ngens()
         for sizes in cartesian_product([NN] * nvars):
             prod = (PP.of_size(size) for size in sizes)
             for A in it.product(*prod):
